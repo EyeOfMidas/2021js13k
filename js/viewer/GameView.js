@@ -21,8 +21,10 @@ export class GameView {
         this.stateMachine.registerState("overnight", new OvernightState(this))
         this.stateMachine.registerState("gameover", new GameOverState(this))
     }
-    async init() {
+    async init(scaledCanvas) {
+        this.stateMachine.getAllStates().forEach(state => { state.init(scaledCanvas) })
         this.stateMachine.setCurrentState("mainmenu");
+        this.scaledCanvas = scaledCanvas
         this.stateMachine.getCurrentState().enter();
     }
 

@@ -26,6 +26,10 @@ export class FiniteStateMachine {
 		return this.getState(this.currentState);
     }
 
+	getAllStates() {
+		return Object.values(this.states)
+	}
+
     transitionTo(key) {
         let current = this.getCurrentState();
         let target = this.getState(key);

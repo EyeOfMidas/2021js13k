@@ -9,11 +9,11 @@ export class GameOverState {
 		this.camera.scale = new Point(1, 1)
 	}
 
-	init() {
+	init(scaledCanvas) {
+		this.canvasBounds = scaledCanvas.bounds
 	}
 
 	draw(ctx, scaledCanvas) {
-		this.canvasBounds = scaledCanvas.bounds;
 		let fontScale = this.canvasBounds.width / 500
 		this.camera.draw(ctx, scaledCanvas, () => {
 			ctx.fillStyle = "white"
@@ -37,7 +37,6 @@ export class GameOverState {
 	}
 
 	enter() {
-		this.init()
 		this.registeredEvents = {}
 		this.registeredEvents["resize"] = this.onResize.bind(this)
 		this.registeredEvents["keydown"] = this.onKeyDown.bind(this)

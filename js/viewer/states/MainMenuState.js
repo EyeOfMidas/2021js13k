@@ -2,6 +2,7 @@ import { Camera } from "../../libraries/Camera.js";
 import { Point } from "../../libraries/spatial/Point.js";
 import { TweenManager, Tween, Easing } from "../../libraries/Tween.js";
 import { DomButton } from "../../libraries/components/DomButton.js";
+import { KeyCode } from "../../libraries/KeyboardInput.js";
 
 export class MainMenuState {
     constructor(view) {
@@ -19,11 +20,11 @@ export class MainMenuState {
         this.wasChanged = false
     }
 
-    init() {
+    init(scaledCanvas) {
+        this.canvasBounds = scaledCanvas.bounds
     }
 
     draw(ctx, scaledCanvas) {
-        this.canvasBounds = scaledCanvas.bounds;
         let fontScale = this.canvasBounds.width / 500
         this.camera.draw(ctx, scaledCanvas, () => {
             ctx.fillStyle="white"
@@ -49,7 +50,6 @@ export class MainMenuState {
     }
 
     enter() {
-        this.init(this.stateMachine.getState("view"))
         this.registeredEvents["click"] = this.onClick.bind(this)
         this.registeredEvents["resize"] = this.onResize.bind(this)
         this.registeredEvents["keyup"] = this.onKeyUp.bind(this)
@@ -92,6 +92,11 @@ export class MainMenuState {
     }
 
     onKeyUp(event) {
+        switch (event.code) {
+            case KeyCode.Enter:
+                this.stateMachine.transitionTo("storyupdate")
+                break
+        }
     }
 
     goToGame() {

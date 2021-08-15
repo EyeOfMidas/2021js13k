@@ -1,19 +1,24 @@
 import { Camera } from "../../libraries/Camera.js";
+import { TextPop } from "../../libraries/components/TextPop.js";
 import { KeyCode } from "../../libraries/KeyboardInput.js"
 import { Point } from "../../libraries/spatial/Point.js";
+import { Tween, TweenManager } from "../../libraries/Tween.js";
 
 export class StoreOpenState {
     constructor(view) {
+        this.scaledCanvas = view.scaledCanvas
         this.stateMachine = view.stateMachine
         this.camera = new Camera()
         this.camera.scale = new Point(1, 1)
+        this.tweenManager = new TweenManager()
+        this.textPops = []
     }
 
-    init() {
+    init(scaledCanvas) {
+        this.canvasBounds = scaledCanvas.bounds
     }
 
     draw(ctx, scaledCanvas) {
-        this.canvasBounds = scaledCanvas.bounds;
         let fontScale = this.canvasBounds.width / 500
         this.camera.draw(ctx, scaledCanvas, () => {
             ctx.fillStyle = "white"
@@ -23,21 +28,26 @@ export class StoreOpenState {
             ctx.translate(0, -this.canvasBounds.height * (1 / 4))
             ctx.fillText("Store Open", 0, 0)
             ctx.restore()
-        })
 
-        // this.playButton.setPosition(this.canvasBounds.width / 2, this.canvasBounds.height * (7 / 8))
-        // this.playButton.draw(ctx, scaledCanvas)
+
+            this.textPops.forEach(textpop => {
+                textpop.draw(ctx, scaledCanvas)
+            })
+        })
     }
 
     update(delta) {
         this.camera.update(delta)
+        this.tweenManager.update()
     }
 
     tick() {
+        if (this.textPops.filter(pop => !pop.isCompleted).length == 0) {
+            this.stateMachine.transitionTo("dayreview")
+        }
     }
 
     enter() {
-        this.init()
         this.registeredEvents = {}
         this.registeredEvents["resize"] = this.onResize.bind(this)
         this.registeredEvents["keydown"] = this.onKeyDown.bind(this)
@@ -52,11 +62,26 @@ export class StoreOpenState {
         for (let index in this.registeredEvents) {
             window.addEventListener(index, this.registeredEvents[index])
         }
+
+        let pops = [
+            { position: new Point(50, 200), amount: "$50", startTime: 2000 },
+            { position: new Point(50, 200), amount: "$20", startTime: 5000 },
+            { position: new Point(50, 200), amount: "$30", startTime: 6000 },
+            { position: new Point(50, 200), amount: "$70", startTime: 9000 },
+        ]
+
+        pops.forEach(popData => {
+            let pop = new TextPop(this.tweenManager, popData.amount, new Point(popData.position.x, popData.position.y), popData.startTime)
+            this.textPops.push(pop)
+        })
+
     }
     leave() {
         for (let index in this.registeredEvents) {
             window.removeEventListener(index, this.registeredEvents[index])
         }
+
+        this.textPops = []
     }
 
     onFinish() {

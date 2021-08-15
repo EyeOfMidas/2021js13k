@@ -1,29 +1,34 @@
-import { ScaledCanvas } from './ScaledCanvas.js';
+import { ScaledCanvas } from './ScaledCanvas.js'
 
 export class CanvasRenderer {
     constructor() {
-        this.context = null;
+        this.context = null
     }
 
     init(container, scene) {
-        this.scaledCanvas = new ScaledCanvas(container);
-        this.scaledCanvas.init();
+        this.scaledCanvas = new ScaledCanvas(container)
+        this.scaledCanvas.init()
         this.scaledCanvas.setImageSmoothing(false)
-        this.context = this.scaledCanvas.getContext();
-        this.setScene(scene);
+        this.context = this.scaledCanvas.getContext()
+        this.setScene(scene)
     }
 
     animate() {
-        this.scaledCanvas.clearFrame();
-        this.scene.draw(this.scaledCanvas.getContext(), this.scaledCanvas);
-        requestAnimationFrame(this.animate.bind(this));
+        this.scaledCanvas.clearFrame()
+        let canvas = this.getCanvas()
+        this.scene.draw(canvas.getContext(), canvas)
+        requestAnimationFrame(this.animate.bind(this))
     }
 
     setScene(scene) {
-        this.scene = scene;
+        this.scene = scene
     }
 
     start() {
-        this.animate();
+        this.animate()
+    }
+
+    getCanvas() {
+        return this.scaledCanvas
     }
 }
