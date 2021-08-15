@@ -16,7 +16,7 @@ export class MainMenuState {
 
         this.playerPosition = new Point(0, 0);
 
-        this.playButton = new DomButton(50, 50, view.element)
+        this.playButton = new DomButton(50, 50, view.element, "Play")
         this.wasChanged = false
     }
 

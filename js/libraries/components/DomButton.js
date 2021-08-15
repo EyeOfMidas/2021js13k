@@ -1,12 +1,11 @@
 import { Point } from "../spatial/Point.js";
 
 export class DomButton {
-    constructor(x, y, view) {
+    constructor(x, y, view, text, classData) {
         this.center = new Point(x, y);
         this.element = document.createElement("button")
-        this.element.style.position = "absolute"
-        this.element.innerText = "Start"
-        this.element.style.zIndex = 1
+        this.element.innerText = text
+        this.element.className = classData
         this.viewer = view
         this.canvasBounds = null
         this.clickHandler = () => {}

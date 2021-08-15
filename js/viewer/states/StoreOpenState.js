@@ -1,4 +1,5 @@
 import { Camera } from "../../libraries/Camera.js";
+import { DomButton } from "../../libraries/components/DomButton.js";
 import { TextPop } from "../../libraries/components/TextPop.js";
 import { KeyCode } from "../../libraries/KeyboardInput.js"
 import { Point } from "../../libraries/spatial/Point.js";
@@ -12,6 +13,8 @@ export class StoreOpenState {
         this.camera.scale = new Point(1, 1)
         this.tweenManager = new TweenManager()
         this.textPops = []
+
+        this.skipButton = new DomButton(50, 50, view.element, "skip", "skipbutton")
     }
 
     init(scaledCanvas) {
@@ -34,10 +37,14 @@ export class StoreOpenState {
                 textpop.draw(ctx, scaledCanvas)
             })
         })
+
+        this.skipButton.setPosition(this.canvasBounds.width * (7 / 8), this.canvasBounds.height * (7 / 8))
+        this.skipButton.draw(ctx, scaledCanvas)
     }
 
     update(delta) {
         this.camera.update(delta)
+        this.skipButton.update(delta)
         this.tweenManager.update()
     }
 
@@ -63,11 +70,15 @@ export class StoreOpenState {
             window.addEventListener(index, this.registeredEvents[index])
         }
 
+        this.skipButton.attach()
+        this.skipButton.onClick(this.skipToEndOfDay.bind(this))
+
+
         let pops = [
-            { position: new Point(50, 200), amount: "$50", startTime: 2000 },
-            { position: new Point(50, 200), amount: "$20", startTime: 5000 },
-            { position: new Point(50, 200), amount: "$30", startTime: 6000 },
-            { position: new Point(50, 200), amount: "$70", startTime: 9000 },
+            { position: this.getRandomScreenPosition(), amount: "$50", startTime: 2000 },
+            { position: this.getRandomScreenPosition(), amount: "$20", startTime: 5000 },
+            { position: this.getRandomScreenPosition(), amount: "$30", startTime: 6000 },
+            { position: this.getRandomScreenPosition(), amount: "$70", startTime: 9000 },
         ]
 
         pops.forEach(popData => {
@@ -76,11 +87,19 @@ export class StoreOpenState {
         })
 
     }
+
+    getRandomScreenPosition() {
+        return new Point(
+            Math.floor(this.canvasBounds.width * Math.random() - this.canvasBounds.width / 2),
+            Math.floor(this.canvasBounds.height * Math.random() - this.canvasBounds.height / 2),
+        )
+    }
     leave() {
         for (let index in this.registeredEvents) {
             window.removeEventListener(index, this.registeredEvents[index])
         }
 
+        this.skipButton.remove()
         this.textPops = []
     }
 
@@ -97,9 +116,6 @@ export class StoreOpenState {
         switch (event.code) {
             case KeyCode.Escape:
                 this.stateMachine.transitionTo("morningsetup")
-                break
-            case KeyCode.Enter:
-                this.stateMachine.transitionTo("dayreview")
                 break
         }
     }
@@ -120,5 +136,9 @@ export class StoreOpenState {
     }
 
     onMouseUp(event) {
+    }
+
+    skipToEndOfDay() {
+        this.stateMachine.transitionTo("dayreview")
     }
 }
