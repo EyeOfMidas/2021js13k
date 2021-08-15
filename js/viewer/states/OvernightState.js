@@ -88,6 +88,7 @@ export class OvernightState {
 	}
 
 	onTouchEnd(event) {
+		this.stateMachine.transitionTo("storyupdate")
 	}
 
 	onMouseDown(event) {

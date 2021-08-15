@@ -85,6 +85,7 @@ export class MorningSetupState {
     }
 
     onTouchEnd(event) {
+        this.stateMachine.transitionTo("storeopen")
     }
 
     onMouseDown(event) {

@@ -85,6 +85,7 @@ export class StoryUpdateState {
     }
 
     onTouchEnd(event) {
+        this.stateMachine.transitionTo("morningsetup")
     }
 
     onMouseDown(event) {

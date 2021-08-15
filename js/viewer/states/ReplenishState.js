@@ -85,6 +85,7 @@ export class ReplenishState {
     }
 
     onTouchEnd(event) {
+        this.stateMachine.transitionTo("overnight")
     }
 
     onMouseDown(event) {

@@ -85,6 +85,7 @@ export class DayReviewState {
     }
 
     onTouchEnd(event) {
+        this.stateMachine.transitionTo("replenish")
     }
 
     onMouseDown(event) {
