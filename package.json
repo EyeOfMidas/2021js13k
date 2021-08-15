@@ -7,12 +7,14 @@
       "build": "webpack",
       "bundle": "zip -r game.zip min.js main.css index.html maps",
       "size": "ls -lah game.zip",
-      "clean": "rm game.zip min.js"
+      "clean": "rm game.zip min.js",
+      "server": "http-server -c-1 -p 3000"
    },
    "devDependencies": {
       "terser": "latest",
       "terser-webpack-plugin": "latest",
       "webpack": "latest",
-      "webpack-cli": "^4.7.2"
+      "webpack-cli": "^4.7.2",
+      "http-server": "latest"
    }
 }
