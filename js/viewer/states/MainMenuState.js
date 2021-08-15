@@ -19,7 +19,7 @@ export class MainMenuState {
         this.wasChanged = false
     }
 
-    init(self) {
+    init() {
     }
 
     draw(ctx, scaledCanvas) {
@@ -95,6 +95,6 @@ export class MainMenuState {
     }
 
     goToGame() {
-        this.stateMachine.transitionTo("play")
+        this.stateMachine.transitionTo("storyupdate")
     }
 }
