@@ -1,0 +1,18 @@
+{
+   "name": "2021js13k",
+   "version": "1.0.0",
+   "description": "The 2021 js13k Entry by @eyeofmidas and @danusha",
+   "scripts": {
+      "build:watch": "webpack --watch",
+      "build": "webpack",
+      "bundle": "zip -r game.zip min.js main.css index.html maps",
+      "size": "ls -lah game.zip",
+      "clean": "rm game.zip min.js"
+   },
+   "devDependencies": {
+      "terser": "latest",
+      "terser-webpack-plugin": "latest",
+      "webpack": "latest",
+      "webpack-cli": "^4.7.2"
+   }
+}
