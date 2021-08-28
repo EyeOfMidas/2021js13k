@@ -34,6 +34,10 @@ export class Point {
         return new Point(Math.cos(angle), Math.sin(angle))
     }
 
+    distanceTo(point) {
+        return Math.hypot(point.y - this.y, point.x - this.x)
+    }
+
     roundTo(point, threshholdX, threshholdY) {
         let diff = this.difference(point)
         if(Math.abs(diff.x) <= threshholdX) {

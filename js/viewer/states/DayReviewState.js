@@ -18,7 +18,7 @@ export class DayReviewState {
         let fontScale = this.canvasBounds.width / 500
         this.camera.draw(ctx, scaledCanvas, () => {
             ctx.fillStyle = Theme.Colors.purple
-            ctx.font = `${Math.min(Math.floor(48 * fontScale), 48)}px Arial`
+            ctx.font = `${Math.min(Math.floor(48 * fontScale), 48)}px ${Theme.Fonts.Header}`
             ctx.textAlign = "center"
             ctx.save()
             ctx.translate(0, -this.canvasBounds.height * (1 / 4))

@@ -103,6 +103,18 @@ export class MainMenuState {
             case KeyCode.Digit2:
                 this.stateMachine.transitionTo("morningsetup")
                 break
+            case KeyCode.Digit3:
+                this.stateMachine.transitionTo("storeopen")
+                break
+            case KeyCode.Digit4:
+                this.stateMachine.transitionTo("dayreview")
+                break
+            case KeyCode.Digit5:
+                this.stateMachine.transitionTo("replenish")
+                break
+            case KeyCode.Digit6:
+                this.stateMachine.transitionTo("overnight")
+                break
         }
     }
 

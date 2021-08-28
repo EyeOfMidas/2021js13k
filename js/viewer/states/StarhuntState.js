@@ -8,6 +8,8 @@ export class StarhuntState {
         this.stateMachine = view.stateMachine
         this.camera = new Camera()
         this.camera.scale = new Point(1, 1)
+        this.launchPosition = new Point(0, 0)
+        this.ballPosition = new Point(0, 0)
     }
 
     init(scaledCanvas) {
@@ -22,8 +24,30 @@ export class StarhuntState {
             ctx.textAlign = "center"
             ctx.save()
             ctx.translate(0, -this.canvasBounds.height * (1 / 4))
-            ctx.fillText("Replenish", 0, 0)
+            ctx.fillText("Starfall", 0, 0)
             ctx.restore()
+
+
+            ctx.fillStyle = Theme.Colors.black
+            ctx.beginPath()
+            ctx.arc(this.launchPosition.x, this.launchPosition.y, 5, 0, 2 * Math.PI)
+            ctx.fill()
+
+            let distance = this.launchPosition.distanceTo(this.ballPosition)
+            let angle = this.launchPosition.angleTo(this.ballPosition)
+
+            for (let magnitude = 0; magnitude < distance; magnitude += distance / 7) {
+                ctx.beginPath()
+                ctx.arc(this.launchPosition.x + magnitude * Math.cos(angle), this.launchPosition.y + magnitude * Math.sin(angle), 5, 0, 2 * Math.PI)
+                ctx.fill()
+            }
+
+            ctx.beginPath()
+            ctx.arc(this.ballPosition.x, this.ballPosition.y, 20, 0, 2 * Math.PI)
+            ctx.fill()
+
+
+
         })
 
         // this.playButton.setPosition(this.canvasBounds.width / 2, this.canvasBounds.height * (7 / 8))
@@ -31,6 +55,8 @@ export class StarhuntState {
     }
 
     update(delta) {
+        this.launchPosition.x = 0
+        this.launchPosition.y = this.canvasBounds.height / 4
         this.camera.update(delta)
     }
 
@@ -83,6 +109,13 @@ export class StarhuntState {
     }
 
     onTouchMove(event) {
+        if (event.touches[0].clientY >= this.canvasBounds.height * (3 / 4)) {
+            this.ballPosition.x = event.touches[0].clientX - this.canvasBounds.width / 2
+            this.ballPosition.y = Math.max(event.touches[0].clientY - this.canvasBounds.height / 2, (this.canvasBounds.height / 4))
+        } else {
+            this.ballPosition.x = this.launchPosition.x
+            this.ballPosition.y = this.launchPosition.y
+        }
     }
 
     onTouchEnd(event) {
@@ -93,6 +126,13 @@ export class StarhuntState {
     }
 
     onMouseMove(event) {
+        if (event.clientY >= this.canvasBounds.height * (3 / 4)) {
+            this.ballPosition.x = event.clientX - this.canvasBounds.width / 2
+            this.ballPosition.y = Math.max(event.clientY - this.canvasBounds.height / 2, (this.canvasBounds.height / 4))
+        } else {
+            this.ballPosition.x = this.launchPosition.x
+            this.ballPosition.y = this.launchPosition.y
+        }
     }
 
     onMouseUp(event) {
