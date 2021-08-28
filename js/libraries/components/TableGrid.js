@@ -1,6 +1,7 @@
 import { Rectangle } from "../spatial/Rectangle.js"
 import { MathUtil } from "../MathUtil.js"
 import { Theme } from "./Theme.js"
+import { Tile } from "./Tile.js"
 
 export class TableGrid {
 	constructor() {
@@ -8,10 +9,8 @@ export class TableGrid {
 		this.canvasBounds = new Rectangle(0, 0, 0, 0)
 		this.tableTileWidth = 6
 		this.tableTileHeight = 4
-		this.tileWidth = 45
-		this.tileHeight = 45
-		this.tiles = []
-
+		Tile.width = Tile.min
+		Tile.height = Tile.min
 	}
 
 	init(scaledCanvas) {
@@ -30,7 +29,7 @@ export class TableGrid {
 		for (let y = 0; y < this.tableTileHeight; y++) {
 			for (let x = 0; x < this.tableTileWidth; x++) {
 				ctx.beginPath()
-				ctx.rect(x * this.tileWidth, y * this.tileHeight, this.tileWidth, this.tileHeight)
+				ctx.rect(x * Tile.width, y * Tile.height, Tile.width, Tile.height)
 				ctx.stroke()
 			}
 		}
@@ -39,9 +38,10 @@ export class TableGrid {
 	}
 
 	update(delta) {
-		this.tileHeight = this.tileWidth = Math.min(MathUtil.clamp(this.canvasBounds.width / 8, 45, 100), MathUtil.clamp(this.canvasBounds.height / 12, 45, 100))
-		this.tableBounds.width = this.tableTileWidth * this.tileWidth
-		this.tableBounds.height = this.tableTileHeight * this.tileHeight
+		Tile.update(this.canvasBounds)
+
+		this.tableBounds.width = this.tableTileWidth * Tile.width
+		this.tableBounds.height = this.tableTileHeight * Tile.height
 		this.tableBounds.x = -this.tableBounds.width / 2
 		this.tableBounds.y = -this.canvasBounds.height / 2 + (this.canvasBounds.height / 12)
 	}

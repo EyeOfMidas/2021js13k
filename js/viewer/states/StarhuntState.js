@@ -2,6 +2,7 @@ import { Camera } from "../../libraries/Camera.js";
 import { KeyCode } from "../../libraries/KeyboardInput.js"
 import { Point } from "../../libraries/spatial/Point.js";
 import { Theme } from "../../libraries/components/Theme.js"
+import { Tile } from "../../libraries/components/Tile.js"
 
 export class StarhuntState {
     constructor(view) {
@@ -14,6 +15,10 @@ export class StarhuntState {
 
     init(scaledCanvas) {
         this.canvasBounds = scaledCanvas.bounds
+        this.launchPosition.x = 0
+        this.launchPosition.y = this.canvasBounds.height / 4
+        this.ballPosition.x = this.launchPosition.x
+        this.ballPosition.y = this.launchPosition.y
     }
 
     draw(ctx, scaledCanvas) {
@@ -26,6 +31,12 @@ export class StarhuntState {
             ctx.translate(0, -this.canvasBounds.height * (1 / 4))
             ctx.fillText("Starfall", 0, 0)
             ctx.restore()
+
+
+            ctx.fillStyle = Theme.Colors.darkgreen
+            ctx.beginPath()
+            ctx.arc(0, 0, Tile.width / 2, 0, 2 * Math.PI)
+            ctx.fill()
 
 
             ctx.fillStyle = Theme.Colors.black
@@ -55,6 +66,7 @@ export class StarhuntState {
     }
 
     update(delta) {
+        Tile.update(this.canvasBounds)
         this.launchPosition.x = 0
         this.launchPosition.y = this.canvasBounds.height / 4
         this.camera.update(delta)
