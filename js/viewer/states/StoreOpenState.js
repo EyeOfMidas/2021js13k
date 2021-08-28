@@ -4,6 +4,7 @@ import { TextPop } from "../../libraries/components/TextPop.js";
 import { KeyCode } from "../../libraries/KeyboardInput.js"
 import { Point } from "../../libraries/spatial/Point.js";
 import { Tween, TweenManager } from "../../libraries/Tween.js";
+import { Theme } from "../../libraries/components/Theme.js"
 
 export class StoreOpenState {
     constructor(view) {
@@ -24,7 +25,7 @@ export class StoreOpenState {
     draw(ctx, scaledCanvas) {
         let fontScale = this.canvasBounds.width / 500
         this.camera.draw(ctx, scaledCanvas, () => {
-            ctx.fillStyle = "white"
+            ctx.fillStyle = Theme.Colors.purple
             ctx.font = `${Math.min(Math.floor(48 * fontScale), 48)}px Arial`
             ctx.textAlign = "center"
             ctx.save()
@@ -75,10 +76,10 @@ export class StoreOpenState {
 
 
         let pops = [
-            { position: this.getRandomScreenPosition(), amount: "$50", startTime: 2000 },
-            { position: this.getRandomScreenPosition(), amount: "$20", startTime: 5000 },
-            { position: this.getRandomScreenPosition(), amount: "$30", startTime: 6000 },
-            { position: this.getRandomScreenPosition(), amount: "$70", startTime: 9000 },
+            { position: this.getRandomScreenPosition(), amount: "$50", startTime: 1000 },
+            { position: this.getRandomScreenPosition(), amount: "$20", startTime: 3000 },
+            { position: this.getRandomScreenPosition(), amount: "$30", startTime: 3500 },
+            { position: this.getRandomScreenPosition(), amount: "$70", startTime: 4500 },
         ]
 
         pops.forEach(popData => {
@@ -89,10 +90,11 @@ export class StoreOpenState {
     }
 
     getRandomScreenPosition() {
-        return new Point(
-            Math.floor(this.canvasBounds.width * Math.random() - this.canvasBounds.width / 2),
-            Math.floor(this.canvasBounds.height * Math.random() - this.canvasBounds.height / 2),
-        )
+        return new Point(0, 0)
+        // return new Point(
+        //     Math.floor(this.canvasBounds.width * Math.random() - this.canvasBounds.width / 2),
+        //     Math.floor(this.canvasBounds.height * Math.random() - this.canvasBounds.height / 2),
+        // )
     }
     leave() {
         for (let index in this.registeredEvents) {

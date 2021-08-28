@@ -1,5 +1,6 @@
 import { Point } from "../spatial/Point.js";
 import { Easing, Tween } from "../Tween.js";
+import { Theme } from "../../libraries/components/Theme.js"
 
 export class TextPop {
 	constructor(tweenManager, text, pos, startDelay) {
@@ -17,7 +18,7 @@ export class TextPop {
 	}
 
 	draw(ctx, scaledCanvas) {
-		ctx.fillStyle = `rgba(40,200,40,${this.alpha})`
+		ctx.fillStyle = Theme.Colors.darkgreen.replace(")", `,${this.alpha})`)
 		ctx.font = `24px Arial`
 		ctx.textAlign = "center"
 		ctx.save()

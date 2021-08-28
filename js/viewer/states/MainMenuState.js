@@ -3,6 +3,7 @@ import { Point } from "../../libraries/spatial/Point.js";
 import { TweenManager, Tween, Easing } from "../../libraries/Tween.js";
 import { DomButton } from "../../libraries/components/DomButton.js";
 import { KeyCode } from "../../libraries/KeyboardInput.js";
+import { Theme } from "../../libraries/components/Theme.js"
 
 export class MainMenuState {
     constructor(view) {
@@ -27,7 +28,7 @@ export class MainMenuState {
     draw(ctx, scaledCanvas) {
         let fontScale = this.canvasBounds.width / 500
         this.camera.draw(ctx, scaledCanvas, () => {
-            ctx.fillStyle="white"
+            ctx.fillStyle = Theme.Colors.purple
             ctx.font=`${Math.min(Math.floor(48 * fontScale), 48)}px Arial`
             ctx.textAlign="center"
             ctx.save()

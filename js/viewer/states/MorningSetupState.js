@@ -3,6 +3,7 @@ import { TableGrid } from "../../libraries/components/TableGrid.js";
 import { DomButton } from "../../libraries/components/DomButton.js";
 import { KeyCode } from "../../libraries/KeyboardInput.js"
 import { Point } from "../../libraries/spatial/Point.js";
+import { Theme } from "../../libraries/components/Theme.js"
 
 export class MorningSetupState {
     constructor(view) {
@@ -21,7 +22,7 @@ export class MorningSetupState {
     draw(ctx, scaledCanvas) {
         let fontScale = this.canvasBounds.width / 500
         this.camera.draw(ctx, scaledCanvas, () => {
-            ctx.fillStyle = "white"
+            ctx.fillStyle = Theme.Colors.purple
             ctx.font = `${Math.min(Math.floor(24 * fontScale), 24)}px Arial`
             ctx.textAlign = "center"
             ctx.save()

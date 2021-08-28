@@ -9,7 +9,7 @@ html,body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background-color: #2E3237;
+    background-color: #f5f7e9;
     position: relative;
 }
 
@@ -24,7 +24,7 @@ button {
     padding: 1em;
     min-height: 2em;
     min-width: 3em;
-    background-color: rgba(128,128,128,0.5);
+    background-color: #71b6f7;
     color: white;
     font-size: 24px;
     font-weight: 600;
@@ -37,9 +37,9 @@ button.skipbutton {
     padding: 0.5em;
     min-height: 1em;
     min-width: 2em;
-    border: 2px solid white;
+    border: 2px solid #71b6f7;
     background-color: transparent;
-    color: white;
+    color: #71b6f7;
     font-size: 18px;
     font-weight: normal;
 
@@ -47,5 +47,6 @@ button.skipbutton {
 
 button:hover {
     cursor: pointer;
-    background-color:rgba(128,128,128,0.8);
+    color: #39383d;
+    background-color:rgba(177, 245, 251, 0.9);
 }
