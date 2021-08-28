@@ -42,8 +42,8 @@ export class ScaledCanvas {
         let bounds = this.canvas.getBoundingClientRect();
         this.bounds.x = bounds.x
         this.bounds.y = bounds.y
-        this.bounds.width = bounds.width / ratio
-        this.bounds.height = bounds.height / ratio
+        this.bounds.width = bounds.width
+        this.bounds.height = bounds.height
 
         this.canvas.width = bounds.width * ratio;
         this.canvas.height = bounds.height * ratio;
