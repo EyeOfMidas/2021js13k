@@ -5,6 +5,7 @@ export class ScaledCanvas {
         this.canvas = null;
         this.context = null;
         this.container = container;
+        this.bounds = new Rectangle()
     }
     
     clearFrame() {
@@ -15,7 +16,7 @@ export class ScaledCanvas {
         this.canvas = document.createElement("canvas");
         this.container.appendChild(this.canvas);
         this.context = this.canvas.getContext('2d');
-    
+        this.bounds = new Rectangle(0, 0, this.canvas.width / this.getPixelRatio(), this.canvas.height / this.getPixelRatio());
         window.addEventListener("resize", this.onResize);
         this.onResize();
     }
@@ -37,9 +38,14 @@ export class ScaledCanvas {
     
     onResize = () => {
         let ratio = this.getPixelRatio();
-        let canvasBounds = this.canvas.getBoundingClientRect();
-        this.canvas.width = canvasBounds.width * ratio;
-        this.canvas.height = canvasBounds.height * ratio;
+        let bounds = this.canvas.getBoundingClientRect();
+        this.bounds.x = bounds.x
+        this.bounds.y = bounds.y
+        this.bounds.width = bounds.width / ratio
+        this.bounds.height = bounds.height / ratio
+
+        this.canvas.width = bounds.width * ratio;
+        this.canvas.height = bounds.height * ratio;
         this.context.scale(ratio, ratio);
     }
 
@@ -59,7 +65,7 @@ export class ScaledCanvas {
         return this.bounds.center;
     }
 
-    get bounds() {
-        return new Rectangle(0,0, this.canvas.width / this.getPixelRatio(), this.canvas.height / this.getPixelRatio());
+    getBounds() {
+        return this.bounds
     }
 }
