@@ -1,5 +1,5 @@
-import { Point } from "../spatial/Point.js"
 import { Rectangle } from "../spatial/Rectangle.js"
+import { MathUtil } from "../MathUtil.js"
 
 export class TableGrid {
 	constructor() {
@@ -22,8 +22,8 @@ export class TableGrid {
 	}
 
 	update(delta) {
-		this.tableBounds.width = 3 * this.canvasBounds.width / 4
-		this.tableBounds.height = this.canvasBounds.height / 4
+		this.tableBounds.width = MathUtil.clamp(3 * this.canvasBounds.width / 4, 6 * 45, 6 * 100)
+		this.tableBounds.height = MathUtil.clamp(this.canvasBounds.height / 4, 4 * 45, 4 * 100)
 		this.tableBounds.x = -this.tableBounds.width / 2
 		this.tableBounds.y = -this.canvasBounds.height / 2 + (this.canvasBounds.height / 12)
 	}
@@ -31,6 +31,9 @@ export class TableGrid {
 	tick() {
 
 	}
+
+
+
 
 
 }
