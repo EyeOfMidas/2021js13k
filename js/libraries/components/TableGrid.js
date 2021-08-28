@@ -26,6 +26,7 @@ export class TableGrid {
 		ctx.rect(0, 0, this.tableBounds.width, this.tableBounds.height)
 		ctx.fill()
 		ctx.strokeStyle = Theme.Colors.gray
+		ctx.setLineDash([2, 4]);
 		for (let y = 0; y < this.tableTileHeight; y++) {
 			for (let x = 0; x < this.tableTileWidth; x++) {
 				ctx.beginPath()
@@ -33,7 +34,7 @@ export class TableGrid {
 				ctx.stroke()
 			}
 		}
-
+		ctx.setLineDash([]);
 		ctx.restore()
 	}
 

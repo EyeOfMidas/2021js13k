@@ -19,17 +19,24 @@ export class StarhuntState {
         this.launchPosition.y = this.canvasBounds.height / 4
         this.ballPosition.x = this.launchPosition.x
         this.ballPosition.y = this.launchPosition.y
+        this.countdown = new Date().getTime() + 30000
+        this.countdownDisplay = "30"
     }
 
     draw(ctx, scaledCanvas) {
         let fontScale = this.canvasBounds.width / 500
         this.camera.draw(ctx, scaledCanvas, () => {
             ctx.fillStyle = Theme.Colors.purple
-            ctx.font = `${Math.min(Math.floor(48 * fontScale), 48)}px ${Theme.Fonts.Header}`
-            ctx.textAlign = "center"
+            ctx.beginPath()
+            ctx.rect(-this.canvasBounds.width / 2, -this.canvasBounds.height / 2, this.canvasBounds.width, this.canvasBounds.height * (3 / 4))
+            ctx.fill()
+
+            ctx.fillStyle = Theme.Colors.white
+            ctx.font = `${Math.min(Math.floor(24 * fontScale), 24)}px ${Theme.Fonts.Header}`
+            ctx.textAlign = "left"
             ctx.save()
-            ctx.translate(0, -this.canvasBounds.height * (1 / 4))
-            ctx.fillText("Starfall", 0, 0)
+            ctx.translate(this.canvasBounds.width / 2 - 100, -this.canvasBounds.height / 2 + 24)
+            ctx.fillText(`${this.countdownDisplay}`, 0, 0)
             ctx.restore()
 
 
@@ -56,13 +63,7 @@ export class StarhuntState {
             ctx.beginPath()
             ctx.arc(this.ballPosition.x, this.ballPosition.y, 20, 0, 2 * Math.PI)
             ctx.fill()
-
-
-
         })
-
-        // this.playButton.setPosition(this.canvasBounds.width / 2, this.canvasBounds.height * (7 / 8))
-        // this.playButton.draw(ctx, scaledCanvas)
     }
 
     update(delta) {
@@ -70,6 +71,13 @@ export class StarhuntState {
         this.launchPosition.x = 0
         this.launchPosition.y = this.canvasBounds.height / 4
         this.camera.update(delta)
+
+        let currentTime = new Date().getTime()
+        if (this.countdown <= currentTime) {
+            this.stateMachine.transitionTo("overnight")
+        } else {
+            this.countdownDisplay = (this.countdown - currentTime) / 1000
+        }
     }
 
     tick() {
@@ -90,6 +98,8 @@ export class StarhuntState {
         for (let index in this.registeredEvents) {
             window.addEventListener(index, this.registeredEvents[index])
         }
+
+        this.countdown = new Date().getTime() + 30000
     }
     leave() {
         for (let index in this.registeredEvents) {
