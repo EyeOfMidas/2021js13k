@@ -119,6 +119,9 @@ export class StoreOpenState {
             case KeyCode.Escape:
                 this.stateMachine.transitionTo("morningsetup")
                 break
+            case KeyCode.Enter:
+                this.stateMachine.transitionTo("dayreview")
+                break;
         }
     }
 

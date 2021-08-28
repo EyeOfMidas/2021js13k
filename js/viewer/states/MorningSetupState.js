@@ -22,7 +22,11 @@ export class MorningSetupState {
     draw(ctx, scaledCanvas) {
         let fontScale = this.canvasBounds.width / 500
         this.camera.draw(ctx, scaledCanvas, () => {
-            ctx.fillStyle = Theme.Colors.purple
+            ctx.fillStyle = Theme.Colors.darkblue
+            ctx.beginPath()
+            ctx.rect(-this.canvasBounds.width / 2, -this.canvasBounds.height / 2, this.canvasBounds.width, this.canvasBounds.height / 2)
+            ctx.fill()
+            ctx.fillStyle = Theme.Colors.white
             ctx.font = `${Math.min(Math.floor(24 * fontScale), 24)}px Arial`
             ctx.textAlign = "center"
             ctx.save()
@@ -88,7 +92,7 @@ export class MorningSetupState {
                 this.stateMachine.transitionTo("storyupdate")
                 break
             case KeyCode.Enter:
-                //this.stateMachine.transitionTo("storeopen")
+                this.startDay()
                 break
         }
     }

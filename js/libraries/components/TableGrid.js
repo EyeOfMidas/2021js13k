@@ -20,13 +20,13 @@ export class TableGrid {
 
 	draw(ctx, scaledCanvas) {
 		let canvasBounds = scaledCanvas.getBounds()
-		ctx.fillStyle = Theme.Colors.lightbrown
+		ctx.fillStyle = Theme.Colors.white
 		ctx.save()
 		ctx.translate(this.tableBounds.x, this.tableBounds.y)
 		ctx.beginPath()
 		ctx.rect(0, 0, this.tableBounds.width, this.tableBounds.height)
 		ctx.fill()
-		ctx.strokeStyle = Theme.Colors.brown
+		ctx.strokeStyle = Theme.Colors.gray
 		for (let y = 0; y < this.tableTileHeight; y++) {
 			for (let x = 0; x < this.tableTileWidth; x++) {
 				ctx.beginPath()
