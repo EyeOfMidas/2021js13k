@@ -16,7 +16,8 @@ export class ScaledCanvas {
         this.canvas = document.createElement("canvas");
         this.container.appendChild(this.canvas);
         this.context = this.canvas.getContext('2d');
-        this.bounds = new Rectangle(0, 0, this.canvas.width / this.getPixelRatio(), this.canvas.height / this.getPixelRatio());
+        let ratio = this.getPixelRatio();
+        this.bounds = new Rectangle(0, 0, this.canvas.width / ratio, this.canvas.height / ratio);
         window.addEventListener("resize", this.onResize);
         this.onResize();
     }

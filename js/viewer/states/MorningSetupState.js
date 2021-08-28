@@ -1,4 +1,5 @@
 import { Camera } from "../../libraries/Camera.js";
+import { TableGrid } from "../../libraries/components/TableGrid.js";
 import { KeyCode } from "../../libraries/KeyboardInput.js"
 import { Point } from "../../libraries/spatial/Point.js";
 
@@ -7,10 +8,12 @@ export class MorningSetupState {
         this.stateMachine = view.stateMachine
         this.camera = new Camera()
         this.camera.scale = new Point(1, 1)
+        this.tableGrid = new TableGrid()
     }
 
     init(scaledCanvas) {
         this.canvasBounds = scaledCanvas.bounds
+        this.tableGrid.init(scaledCanvas)
     }
 
     draw(ctx, scaledCanvas) {
@@ -23,13 +26,19 @@ export class MorningSetupState {
             ctx.translate(0, -this.canvasBounds.height * (1 / 4))
             ctx.fillText("Morning Setup", 0, 0)
             ctx.restore()
+
+            this.tableGrid.draw(ctx, scaledCanvas)
         })
+
+
+
 
         // this.playButton.setPosition(this.canvasBounds.width / 2, this.canvasBounds.height * (7 / 8))
         // this.playButton.draw(ctx, scaledCanvas)
     }
 
     update(delta) {
+        this.tableGrid.update(delta)
         this.camera.update(delta)
     }
 
