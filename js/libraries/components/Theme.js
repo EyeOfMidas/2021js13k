@@ -11,5 +11,9 @@ export let Theme = {
 		green: "rgb(164, 215, 64)",
 		darkgreen: "rgb(102, 184, 136)",
 		gray: "rgb(197, 196, 197)",
+	},
+	Fonts: {
+		Header: "Georgia",
+		Text: "Arial",
 	}
 }

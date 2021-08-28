@@ -31,16 +31,16 @@ export class MorningSetupState {
             )
             ctx.fill()
             ctx.fillStyle = Theme.Colors.white
-            ctx.font = `${Math.min(Math.floor(24 * fontScale), 24)}px Arial`
-            ctx.textAlign = "center"
+            ctx.font = `bold ${Math.min(Math.floor(24 * fontScale), 24)}px ${Theme.Fonts.Header}`
+            ctx.textAlign = "left"
 
             let tableHeaderText = "Shop Table"
             ctx.save()
-            ctx.translate(-ctx.measureText(tableHeaderText).width, -this.canvasBounds.height * (7 / 16))
+            ctx.translate(-this.tableGrid.tableBounds.width / 2, -this.canvasBounds.height * (7 / 16))
             ctx.fillText(tableHeaderText, 0, 0)
             ctx.restore()
 
-            ctx.font = `${Math.min(Math.floor(16 * fontScale), 16)}px Arial`
+            ctx.font = `${Math.min(Math.floor(16 * fontScale), 16)}px ${Theme.Fonts.Text}`
             ctx.fillStyle = Theme.Colors.white
             ctx.textAlign = "center"
             ctx.fillText("Drag the items you wish to sell for the day on to the table", 0, -this.canvasBounds.height * (1 / 16))

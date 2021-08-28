@@ -4,7 +4,7 @@ import { GameOverState } from "./states/GameoverState.js";
 import { MainMenuState } from "./states/MainMenuState.js";
 import { MorningSetupState } from "./states/MorningSetupState.js";
 import { OvernightState } from "./states/OvernightState.js";
-import { ReplenishState } from "./states/ReplenishState.js";
+import { StarhuntState } from "./states/StarhuntState.js";
 import { StoreOpenState } from "./states/StoreOpenState.js";
 import { StoryUpdateState } from "./states/StoryUpdateState.js";
 
@@ -17,7 +17,7 @@ export class GameView {
         this.stateMachine.registerState("morningsetup", new MorningSetupState(this))
         this.stateMachine.registerState("storeopen", new StoreOpenState(this))
         this.stateMachine.registerState("dayreview", new DayReviewState(this))
-        this.stateMachine.registerState("replenish", new ReplenishState(this))
+        this.stateMachine.registerState("replenish", new StarhuntState(this))
         this.stateMachine.registerState("overnight", new OvernightState(this))
         this.stateMachine.registerState("gameover", new GameOverState(this))
     }
