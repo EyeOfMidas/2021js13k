@@ -1,5 +1,6 @@
 import { Camera } from "../../libraries/Camera.js";
 import { TableGrid } from "../../libraries/components/TableGrid.js";
+import { DomButton } from "../../libraries/components/DomButton.js";
 import { KeyCode } from "../../libraries/KeyboardInput.js"
 import { Point } from "../../libraries/spatial/Point.js";
 
@@ -9,6 +10,7 @@ export class MorningSetupState {
         this.camera = new Camera()
         this.camera.scale = new Point(1, 1)
         this.tableGrid = new TableGrid()
+        this.startDayButton = new DomButton(80, 30, view.element, "Start Day")
     }
 
     init(scaledCanvas) {
@@ -31,14 +33,12 @@ export class MorningSetupState {
             this.tableGrid.draw(ctx, scaledCanvas)
         })
 
-
-
-
-        // this.playButton.setPosition(this.canvasBounds.width / 2, this.canvasBounds.height * (7 / 8))
-        // this.playButton.draw(ctx, scaledCanvas)
+        this.startDayButton.setPosition(this.canvasBounds.width * (3 / 4), this.canvasBounds.height * (7 / 8))
+        this.startDayButton.draw(ctx, scaledCanvas)
     }
 
     update(delta) {
+        this.startDayButton.update(delta)
         this.tableGrid.update(delta)
         this.camera.update(delta)
     }
@@ -61,11 +61,15 @@ export class MorningSetupState {
         for (let index in this.registeredEvents) {
             window.addEventListener(index, this.registeredEvents[index])
         }
+
+        this.startDayButton.attach()
+        this.startDayButton.onClick(this.startDay.bind(this))
     }
     leave() {
         for (let index in this.registeredEvents) {
             window.removeEventListener(index, this.registeredEvents[index])
         }
+        this.startDayButton.remove()
     }
 
     onFinish() {
@@ -83,7 +87,7 @@ export class MorningSetupState {
                 this.stateMachine.transitionTo("storyupdate")
                 break
             case KeyCode.Enter:
-                this.stateMachine.transitionTo("storeopen")
+                //this.stateMachine.transitionTo("storeopen")
                 break
         }
     }
@@ -95,7 +99,7 @@ export class MorningSetupState {
     }
 
     onTouchEnd(event) {
-        this.stateMachine.transitionTo("storeopen")
+        //this.stateMachine.transitionTo("storeopen")
     }
 
     onMouseDown(event) {
@@ -105,5 +109,9 @@ export class MorningSetupState {
     }
 
     onMouseUp(event) {
+    }
+
+    startDay() {
+        this.stateMachine.transitionTo("storeopen")
     }
 }
