@@ -96,6 +96,12 @@ export class MainMenuState {
             case KeyCode.Enter:
                 this.stateMachine.transitionTo("storyupdate")
                 break
+            case KeyCode.Digit1:
+                this.stateMachine.transitionTo("storyupdate")
+                break
+            case KeyCode.Digit2:
+                this.stateMachine.transitionTo("morningsetup")
+                break
         }
     }
 
