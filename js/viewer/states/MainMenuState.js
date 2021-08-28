@@ -36,7 +36,7 @@ export class MainMenuState {
             ctx.restore()
         })
 
-        this.playButton.setPosition(this.canvasBounds.width / 2, this.canvasBounds.height * (7 / 8))
+        this.playButton.setPosition(this.canvasBounds.width / 2, this.canvasBounds.height * (3 / 4))
         this.playButton.draw(ctx, scaledCanvas)
     }
 

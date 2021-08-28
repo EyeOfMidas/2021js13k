@@ -20,11 +20,12 @@ export class MorningSetupState {
         let fontScale = this.canvasBounds.width / 500
         this.camera.draw(ctx, scaledCanvas, () => {
             ctx.fillStyle = "white"
-            ctx.font = `${Math.min(Math.floor(48 * fontScale), 48)}px Arial`
+            ctx.font = `${Math.min(Math.floor(24 * fontScale), 24)}px Arial`
             ctx.textAlign = "center"
             ctx.save()
-            ctx.translate(0, -this.canvasBounds.height * (1 / 4))
-            ctx.fillText("Morning Setup", 0, 0)
+            let tableHeaderText = "Shop Table"
+            ctx.translate(-ctx.measureText(tableHeaderText).width, -this.canvasBounds.height * (7 / 16))
+            ctx.fillText(tableHeaderText, 0, 0)
             ctx.restore()
 
             this.tableGrid.draw(ctx, scaledCanvas)
