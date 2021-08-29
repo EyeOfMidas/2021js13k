@@ -3,7 +3,7 @@ import { Theme } from "./Theme.js"
 import { Tile } from "./Tile.js"
 
 export class Star {
-	constructor(x = 0, y = 0, color = Theme.Colors.darkgreen, size = 1) {
+	constructor(x = 0, y = 0, size = 1, color = 0) {
 		this.position = new Point(x, y)
 		this.velocity = new Point(0, 0)
 		this.acceleration = new Point(0, 0)
@@ -12,8 +12,12 @@ export class Star {
 		this.state = "still"
 	}
 
+	colorLookup() {
+		return [Theme.Colors.darkgreen, Theme.Colors.lightblue, Theme.Colors.white, Theme.Colors.green][this.color]
+	}
+
 	draw(ctx, scaledCanvas) {
-		ctx.fillStyle = this.color
+		ctx.fillStyle = this.colorLookup()
 		ctx.beginPath()
 		ctx.arc(this.position.x, this.position.y, this.size * (Tile.width / 4), 0, 2 * Math.PI)
 		ctx.fill()
@@ -39,7 +43,7 @@ export class Star {
 	hit() {
 		this.state = "falling"
 		this.velocity.y = -4
-		this.velocity.x = 1
+		this.velocity.x = 2 * Math.random() - 1
 	}
 
 	tick() {

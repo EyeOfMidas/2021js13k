@@ -34,6 +34,11 @@ export class StarhuntState {
             ctx.rect(-this.canvasBounds.width / 2, -this.canvasBounds.height / 2, this.canvasBounds.width, this.canvasBounds.height * (3 / 4))
             ctx.fill()
 
+            ctx.fillStyle = Theme.Colors.blue
+            ctx.beginPath()
+            ctx.rect(-this.canvasBounds.width / 2, this.canvasBounds.height * (1 / 4), this.canvasBounds.width, this.canvasBounds.height * (1 / 4))
+            ctx.fill()
+
             ctx.fillStyle = Theme.Colors.white
             ctx.font = `${Math.min(Math.floor(24 * fontScale), 24)}px ${Theme.Fonts.Header}`
             ctx.textAlign = "left"
@@ -128,13 +133,11 @@ export class StarhuntState {
     }
 
     getRandomStar() {
-        let colors = Object.values(Theme.Colors)
-        let colorIndex = Math.floor(colors.length * Math.random())
         return new Star(
             Math.floor(this.canvasBounds.width * Math.random() - this.canvasBounds.width / 2),
             Math.floor((3 / 4) * this.canvasBounds.height * Math.random() - this.canvasBounds.height / 2),
-            colors[colorIndex],
-            Math.floor(3 * Math.random() + 1),
+            Math.floor(4 * Math.random()),
+            Math.floor(3 * Math.random() + 1)
         )
     }
 
