@@ -1,29 +1,26 @@
-import { Camera } from "../../libraries/Camera.js";
+import { Camera } from "../../libraries/Camera.js"
 import { KeyCode } from "../../libraries/KeyboardInput.js"
-import { Point } from "../../libraries/spatial/Point.js";
+import { Point } from "../../libraries/spatial/Point.js"
 import { Theme } from "../../libraries/components/Theme.js"
 import { Tile } from "../../libraries/components/Tile.js"
-import { Star } from "../../libraries/components/Star.js";
+import { Star } from "../../libraries/components/Star.js"
+import { Slinger } from "../../libraries/components/Slinger.js"
 
 export class StarhuntState {
     constructor(view) {
         this.stateMachine = view.stateMachine
         this.camera = new Camera()
         this.camera.scale = new Point(1, 1)
-        this.launchPosition = new Point(0, 0)
-        this.ballPosition = new Point(0, 0)
         this.stars = []
         this.isFinished = false
+        this.slinger = new Slinger()
     }
 
     init(scaledCanvas) {
         this.canvasBounds = scaledCanvas.bounds
-        this.launchPosition.x = 0
-        this.launchPosition.y = this.canvasBounds.height / 4
-        this.ballPosition.x = this.launchPosition.x
-        this.ballPosition.y = this.launchPosition.y
-        this.countdown = new Date().getTime() + 30000
-        this.countdownDisplay = "30"
+        this.countdown = new Date().getTime() + 15000
+        this.countdownDisplay = "15.000"
+        this.slinger.init(scaledCanvas)
     }
 
     draw(ctx, scaledCanvas) {
@@ -52,32 +49,14 @@ export class StarhuntState {
                 star.draw(ctx, scaledCanvas)
             })
 
-
-            ctx.fillStyle = Theme.Colors.black
-            ctx.beginPath()
-            ctx.arc(this.launchPosition.x, this.launchPosition.y, 5, 0, 2 * Math.PI)
-            ctx.fill()
-
-            let distance = this.launchPosition.distanceTo(this.ballPosition)
-            let angle = this.launchPosition.angleTo(this.ballPosition)
-
-            for (let magnitude = 0; magnitude < distance; magnitude += distance / 7) {
-                ctx.beginPath()
-                ctx.arc(this.launchPosition.x + magnitude * Math.cos(angle), this.launchPosition.y + magnitude * Math.sin(angle), 5, 0, 2 * Math.PI)
-                ctx.fill()
-            }
-
-            ctx.beginPath()
-            ctx.arc(this.ballPosition.x, this.ballPosition.y, 20, 0, 2 * Math.PI)
-            ctx.fill()
+            this.slinger.draw(ctx, scaledCanvas)
         })
     }
 
     update(delta) {
         Tile.update(this.canvasBounds)
-        this.launchPosition.x = 0
-        this.launchPosition.y = this.canvasBounds.height / 4
 
+        this.slinger.update(delta)
         this.stars.forEach(star => {
             star.update(delta)
         })
@@ -127,9 +106,6 @@ export class StarhuntState {
                 this.stars[i].hit()
             }, Math.floor(15000 * Math.random()))
         }
-
-
-
     }
 
     getRandomStar() {
@@ -172,32 +148,21 @@ export class StarhuntState {
     }
 
     onTouchMove(event) {
-        if (event.touches[0].clientY >= this.canvasBounds.height * (3 / 4)) {
-            this.ballPosition.x = event.touches[0].clientX - this.canvasBounds.width / 2
-            this.ballPosition.y = Math.max(event.touches[0].clientY - this.canvasBounds.height / 2, (this.canvasBounds.height / 4))
-        } else {
-            this.ballPosition.x = this.launchPosition.x
-            this.ballPosition.y = this.launchPosition.y
-        }
+        this.slinger.move(event.touches[0].clientX, event.touches[0].clientY)
     }
 
     onTouchEnd(event) {
-
+        this.slinger.fire()
     }
 
     onMouseDown(event) {
     }
 
     onMouseMove(event) {
-        if (event.clientY >= this.canvasBounds.height * (3 / 4)) {
-            this.ballPosition.x = event.clientX - this.canvasBounds.width / 2
-            this.ballPosition.y = Math.max(event.clientY - this.canvasBounds.height / 2, (this.canvasBounds.height / 4))
-        } else {
-            this.ballPosition.x = this.launchPosition.x
-            this.ballPosition.y = this.launchPosition.y
-        }
+        this.slinger.move(event.clientX, event.clientY)
     }
 
     onMouseUp(event) {
+        this.slinger.fire()
     }
 }
