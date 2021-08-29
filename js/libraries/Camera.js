@@ -13,7 +13,7 @@ export class Camera {
         if(!this.targetPosition.equals(this.position)) {
             let direction = this.position.vectorTo(this.targetPosition)
             direction.scale(this.speed, this.speed)
-            this.position = this.position.offset(direction)
+            this.position.offset(direction)
             this.position.roundTo(this.targetPosition, this.speed, this.speed)
         }
     }

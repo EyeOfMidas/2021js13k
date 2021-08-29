@@ -22,7 +22,8 @@ export class Point {
     }
 
     offset(point) {
-        return new Point(this.x + point.x, this.y + point.y)
+        this.x += point.x
+        this.y += point.y
     }
 
     angleTo(point) {

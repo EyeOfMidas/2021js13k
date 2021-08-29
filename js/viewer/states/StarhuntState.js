@@ -3,6 +3,7 @@ import { KeyCode } from "../../libraries/KeyboardInput.js"
 import { Point } from "../../libraries/spatial/Point.js";
 import { Theme } from "../../libraries/components/Theme.js"
 import { Tile } from "../../libraries/components/Tile.js"
+import { Star } from "../../libraries/components/Star.js";
 
 export class StarhuntState {
     constructor(view) {
@@ -11,6 +12,8 @@ export class StarhuntState {
         this.camera.scale = new Point(1, 1)
         this.launchPosition = new Point(0, 0)
         this.ballPosition = new Point(0, 0)
+        this.stars = []
+        this.isFinished = false
     }
 
     init(scaledCanvas) {
@@ -40,10 +43,9 @@ export class StarhuntState {
             ctx.restore()
 
 
-            ctx.fillStyle = Theme.Colors.darkgreen
-            ctx.beginPath()
-            ctx.arc(0, 0, Tile.width / 2, 0, 2 * Math.PI)
-            ctx.fill()
+            this.stars.forEach(star => {
+                star.draw(ctx, scaledCanvas)
+            })
 
 
             ctx.fillStyle = Theme.Colors.black
@@ -70,13 +72,24 @@ export class StarhuntState {
         Tile.update(this.canvasBounds)
         this.launchPosition.x = 0
         this.launchPosition.y = this.canvasBounds.height / 4
+
+        this.stars.forEach(star => {
+            star.update(delta)
+        })
         this.camera.update(delta)
 
+        if (this.isFinished) {
+            return
+        }
         let currentTime = new Date().getTime()
         if (this.countdown <= currentTime) {
-            this.stateMachine.transitionTo("overnight")
+            this.isFinished = true
+            this.countdownDisplay = "0.000"
+            setTimeout(() => {
+                this.stateMachine.transitionTo("overnight")
+            }, 2000)
         } else {
-            this.countdownDisplay = (this.countdown - currentTime) / 1000
+            this.countdownDisplay = `${(this.countdown - currentTime) / 1000}`
         }
     }
 
@@ -99,12 +112,37 @@ export class StarhuntState {
             window.addEventListener(index, this.registeredEvents[index])
         }
 
-        this.countdown = new Date().getTime() + 30000
+        this.isFinished = false
+        this.countdown = new Date().getTime() + 15000
+        this.stars = []
+        for (let i = 0; i < 5; i++) {
+            this.stars.push(this.getRandomStar())
+
+            setTimeout(() => {
+                this.stars[i].hit()
+            }, Math.floor(15000 * Math.random()))
+        }
+
+
+
     }
+
+    getRandomStar() {
+        let colors = Object.values(Theme.Colors)
+        let colorIndex = Math.floor(colors.length * Math.random())
+        return new Star(
+            Math.floor(this.canvasBounds.width * Math.random() - this.canvasBounds.width / 2),
+            Math.floor((3 / 4) * this.canvasBounds.height * Math.random() - this.canvasBounds.height / 2),
+            colors[colorIndex],
+            Math.floor(3 * Math.random() + 1),
+        )
+    }
+
     leave() {
         for (let index in this.registeredEvents) {
             window.removeEventListener(index, this.registeredEvents[index])
         }
+        this.stars = []
     }
 
     onFinish() {
@@ -141,7 +179,7 @@ export class StarhuntState {
     }
 
     onTouchEnd(event) {
-        this.stateMachine.transitionTo("overnight")
+
     }
 
     onMouseDown(event) {
