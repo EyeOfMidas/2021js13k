@@ -7,6 +7,7 @@ export class Slinger {
 		this.launchPosition = new Point(0, 0)
 		this.ballAcceleration = new Point(0, 0)
 		this.ballVelocity = new Point(0, 0)
+		this.ballRadius = 20
 		this.state = "launch"
 	}
 
@@ -41,7 +42,7 @@ export class Slinger {
 		}
 
 		ctx.beginPath()
-		ctx.arc(this.ballPosition.x, this.ballPosition.y, 20, 0, 2 * Math.PI)
+		ctx.arc(this.ballPosition.x, this.ballPosition.y, this.ballRadius, 0, 2 * Math.PI)
 		ctx.fill()
 	}
 
@@ -88,9 +89,15 @@ export class Slinger {
 
 	fire() {
 		this.state = "falling"
-		let distance = 20 * this.ballPosition.distanceTo(this.launchPosition) / (this.canvasBounds.height / 4)
+		let distance = 25 * this.ballPosition.distanceTo(this.launchPosition) / (this.canvasBounds.height / 4)
 		let angle = this.ballPosition.angleTo(this.launchPosition)
 		this.ballVelocity.x = distance * Math.cos(angle)
 		this.ballVelocity.y = distance * Math.sin(angle)
+	}
+
+	hit(star) {
+		let angle = this.ballPosition.angleTo(star.position)
+		this.ballVelocity.x = this.ballVelocity.x * Math.cos(angle)
+		this.ballVelocity.y = this.ballVelocity.y * Math.sin(angle)
 	}
 }

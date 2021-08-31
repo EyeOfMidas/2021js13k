@@ -58,6 +58,7 @@ export class StarhuntState {
 
         this.slinger.update(delta)
         this.stars.forEach(star => {
+            star.checkCollision(this.slinger)
             star.update(delta)
         })
         this.camera.update(delta)
@@ -101,10 +102,6 @@ export class StarhuntState {
         this.stars = []
         for (let i = 0; i < 5; i++) {
             this.stars.push(this.getRandomStar())
-
-            setTimeout(() => {
-                this.stars[i].hit()
-            }, Math.floor(15000 * Math.random()))
         }
     }
 

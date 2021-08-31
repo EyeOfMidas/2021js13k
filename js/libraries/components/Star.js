@@ -40,13 +40,25 @@ export class Star {
 
 	}
 
-	hit() {
+	hit(slinger) {
 		this.state = "falling"
-		this.velocity.y = -4
-		this.velocity.x = 2 * Math.random() - 1
+		let angle = this.position.angleTo(slinger.ballPosition)
+		this.velocity.x = slinger.ballVelocity.x * Math.cos(angle)
+		this.velocity.y = slinger.ballVelocity.y * Math.sin(angle)
 	}
 
 	tick() {
 
+	}
+
+	checkCollision(slinger) {
+		if(this.state == "falling") {
+			return
+		}
+		let distance = this.position.distanceTo(slinger.ballPosition)
+		if(distance <= this.size * (Tile.width / 4) + slinger.ballRadius) {
+			this.hit(slinger)
+			slinger.hit(this)
+		}
 	}
 }
