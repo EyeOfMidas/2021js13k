@@ -5,6 +5,7 @@ import { Theme } from "../../libraries/components/Theme.js"
 import { Tile } from "../../libraries/components/Tile.js"
 import { Star } from "../../libraries/components/Star.js"
 import { Slinger } from "../../libraries/components/Slinger.js"
+import { Save } from "../../libraries/Save.js"
 
 export class StarhuntState {
     constructor(view) {
@@ -14,13 +15,13 @@ export class StarhuntState {
         this.stars = []
         this.isFinished = false
         this.slinger = new Slinger()
+        this.save = new Save()
     }
 
     init(scaledCanvas) {
         this.canvasBounds = scaledCanvas.bounds
         this.countdown = new Date().getTime() + 15000
         this.countdownDisplay = "15.000"
-        this.slinger.init(scaledCanvas)
     }
 
     draw(ctx, scaledCanvas) {
@@ -103,6 +104,7 @@ export class StarhuntState {
         for (let i = 0; i < 5; i++) {
             this.stars.push(this.getRandomStar())
         }
+        this.slinger.init(this.canvasBounds)
     }
 
     getRandomStar() {
@@ -118,6 +120,8 @@ export class StarhuntState {
         for (let index in this.registeredEvents) {
             window.removeEventListener(index, this.registeredEvents[index])
         }
+        this.save.appendKey("collection", this.slinger.getCollectedStars())
+
         this.stars = []
     }
 

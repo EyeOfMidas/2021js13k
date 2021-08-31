@@ -9,15 +9,20 @@ export class Slinger {
 		this.ballVelocity = new Point(0, 0)
 		this.ballRadius = 20
 		this.state = "launch"
+		this.collectedStars = []
+		this.loadLock = true
 	}
 
-	init(scaledCanvas) {
-		this.canvasBounds = scaledCanvas.bounds
+	init(canvasBounds) {
+		this.canvasBounds = canvasBounds
 		this.launchPosition.x = 0
 		this.launchPosition.y = this.canvasBounds.height / 4
 		this.ballPosition.x = this.launchPosition.x
 		this.ballPosition.y = this.launchPosition.y
 		this.state = "launch"
+		this.collectedStars = []
+		this.loadLock = true
+		setTimeout(() => { this.loadLock = false}, 500)
 	}
 
 	draw(ctx, scaledCanvas) {
@@ -76,6 +81,9 @@ export class Slinger {
 	}
 
 	move(x, y) {
+		if(this.loadLock) {
+			return
+		}
 		if (this.state == "launch") {
 			if (y >= this.canvasBounds.height * (3 / 4)) {
 				this.ballPosition.x = x - this.canvasBounds.width / 2
@@ -88,6 +96,9 @@ export class Slinger {
 	}
 
 	fire() {
+		if(this.loadLock) {
+			return
+		}
 		this.state = "falling"
 		let distance = 25 * this.ballPosition.distanceTo(this.launchPosition) / (this.canvasBounds.height / 4)
 		let angle = this.ballPosition.angleTo(this.launchPosition)
@@ -99,5 +110,10 @@ export class Slinger {
 		let angle = this.ballPosition.angleTo(star.position)
 		this.ballVelocity.x = this.ballVelocity.x * Math.cos(angle)
 		this.ballVelocity.y = this.ballVelocity.y * Math.sin(angle)
+		this.collectedStars.push(star)
+	}
+
+	getCollectedStars() {
+		return this.collectedStars
 	}
 }

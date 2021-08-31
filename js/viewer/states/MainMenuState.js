@@ -4,6 +4,7 @@ import { TweenManager, Tween, Easing } from "../../libraries/Tween.js";
 import { DomButton } from "../../libraries/components/DomButton.js";
 import { KeyCode } from "../../libraries/KeyboardInput.js";
 import { Theme } from "../../libraries/components/Theme.js"
+import { Save } from "../../libraries/Save.js";
 
 export class MainMenuState {
     constructor(view) {
@@ -19,6 +20,9 @@ export class MainMenuState {
 
         this.playButton = new DomButton(50, 50, view.element, "Play")
         this.wasChanged = false
+        this.save = new Save()
+
+        this.deleteSaveButton = new DomButton(50, 50, view.element, "delete save", "skipbutton")
     }
 
     init(scaledCanvas) {
@@ -33,16 +37,20 @@ export class MainMenuState {
             ctx.textAlign="center"
             ctx.save()
             ctx.translate(0, -this.canvasBounds.height * (1 / 4))
-            ctx.fillText("2021 js13k Game", 0, 0)
+            ctx.fillText("Star Shop", 0, 0)
             ctx.restore()
         })
 
         this.playButton.setPosition(this.canvasBounds.width / 2, this.canvasBounds.height * (3 / 4))
         this.playButton.draw(ctx, scaledCanvas)
+
+        this.deleteSaveButton.setPosition(this.canvasBounds.width * (7 / 8), this.canvasBounds.height * (7 / 8))
+        this.deleteSaveButton.draw(ctx, scaledCanvas)
     }
 
     update(delta) {
         this.playButton.update(delta)
+        this.deleteSaveButton.update(delta)
         this.camera.update(delta);
         this.tweenManager.update()
     }
@@ -64,6 +72,9 @@ export class MainMenuState {
 
         this.playButton.attach()
         this.playButton.onClick(this.goToGame.bind(this))
+
+        this.deleteSaveButton.attach()
+        this.deleteSaveButton.onClick(this.deleteSave.bind(this))
     }
     leave() {
         for (let index in this.registeredEvents) {
@@ -72,6 +83,7 @@ export class MainMenuState {
         this.registeredEvents = {}
         this.tweenManager.clear()
         this.playButton.remove()
+        this.deleteSaveButton.remove()
     }
 
     onClick() {
@@ -120,5 +132,12 @@ export class MainMenuState {
 
     goToGame() {
         this.stateMachine.transitionTo("storyupdate")
+    }
+
+    deleteSave() {
+        if(confirm("Are you sure you want to delete your save data?")) {
+            this.save.delete()
+            alert("Save data deleted")
+        }
     }
 }
